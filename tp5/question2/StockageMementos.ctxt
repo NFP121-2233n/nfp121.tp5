@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=StockageMementos
+comment0.text=\r\n\ @author\ Samira\ Rahme\r\n\ @version\ 2.0\r\n
+comment1.params=
+comment1.target=StockageMementos()
+comment2.params=
+comment2.target=java.util.Stack\ getMementos()
+comment3.params=
+comment3.target=Memento\ getMemento()
+comment4.params=memento
+comment4.target=Memento\ addMemento(Memento)
+numComments=5

@@ -30,11 +30,14 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
     private JButton boutonAnnuler = new JButton("annuler");
 
     private TextArea texte = new TextArea();
-
+    private StockageMementos stockagemementos;
+    
     private List<String> liste;
     private Map<String, Integer> occurrences;
-
+    
+    
     public JPanelListe2(List<String> liste, Map<String, Integer> occurrences) {
+        stockagemementos = new StockageMementos();
         this.liste = liste;
         this.occurrences = occurrences;
 
@@ -67,7 +70,12 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
         add(texte, "Center");
 
         boutonRechercher.addActionListener(this);
-        // à compléter;
+        boutonRetirer.addActionListener(this);
+        boutonOccurrences.addActionListener(this);
+        boutonAnnuler.addActionListener(this);
+        saisie.addActionListener(this);
+        ordreCroissant.addItemListener(this);
+        ordreDecroissant.addItemListener(this);
 
     }
 
@@ -98,21 +106,40 @@ public class JPanelListe2 extends JPanel implements ActionListener, ItemListener
             afficheur.setText(e.toString());
         }
     }
-
+    private class trieDec implements Comparator<String>{
+        public int compare(String str1, String str2){ 
+            return str2.compareTo(str1);
+        }
+    }
     public void itemStateChanged(ItemEvent ie) {
+        stockagemementos.addMemento(new Memento(new LinkedList<>(liste)));
         if (ie.getSource() == ordreCroissant)
-        ;// à compléter
+         Collections.sort(liste);
         else if (ie.getSource() == ordreDecroissant)
-        ;// à compléter
+        Collections.sort(liste, new trieDec());
 
         texte.setText(liste.toString());
     }
 
     private boolean retirerDeLaListeTousLesElementsCommencantPar(String prefixe) {
         boolean resultat = false;
-        // à compléter
-        // à compléter
-        // à compléter
+       List<String> listeTemp = new LinkedList<>(liste);
+        String elt;
+        Iterator<String> it = liste.iterator();
+        while(it.hasNext()){
+            elt = it.next();
+            if(elt != null && elt.startsWith(prefixe)){
+             
+                occurrences.replace(elt, occurrences.get(elt) - 1);
+                resultat = true;
+                it.remove();
+            }
+        }
+
+        if(resultat){
+            stockagemementos.addMemento(new Memento(new LinkedList<>(listeTemp)));
+
+        }
         return resultat;
     }
 
